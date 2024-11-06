@@ -15,7 +15,7 @@ router
   .post(authenticate, createTask)
   .get(authenticate, getAllUserTasks);
 
-router.get("/all", [authenticate, IsAdmin], getAllTasks);
+router.get("/all", authenticate, IsAdmin, getAllTasks);
 
 router
   .route("/:id")

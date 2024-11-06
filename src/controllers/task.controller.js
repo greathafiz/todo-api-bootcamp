@@ -15,7 +15,9 @@ export const createTask = async (req, res) => {
 
 export const getAllUserTasks = async (req, res) => {
   try {
-    const userTasks = await Task.find({ createdBy: req.user.id });
+    const userTasks = await Task.find({ createdBy: req.user.id }).populate(
+      "createdBy"
+    );
     res.status(200).json({ message: "retrieved", userTasks });
   } catch (error) {
     console.error(error);
@@ -29,7 +31,10 @@ export const getUserTask = async (req, res) => {
     const { id: userId, userRole } = req.user;
 
     // another approach to -- const task = await Task.findById(taskId);
-    const task = await Task.findOne({ _id: taskId, createdBy: userId });
+    const task = await Task.findOne({
+      _id: taskId,
+      createdBy: userId,
+    }).populate("createdBy");
 
     if (!task) {
       return res.status(404).json({ message: `no task with id ${taskId}` });
